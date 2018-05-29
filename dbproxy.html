@@ -1,0 +1,437 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+"http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en">
+<head>
+<title>dbproxy</title>
+<!-- 2014-01-10 五 15:42 -->
+<meta  http-equiv="Content-Type" content="text/html;charset=utf-8" />
+<meta  name="generator" content="Org-mode" />
+<meta  name="author" content="jim" />
+<style type="text/css">
+ <!--/*--><![CDATA[/*><!--*/
+  .title  { text-align: center; }
+  .todo   { font-family: monospace; color: red; }
+  .done   { color: green; }
+  .tag    { background-color: #eee; font-family: monospace;
+            padding: 2px; font-size: 80%; font-weight: normal; }
+  .timestamp { color: #bebebe; }
+  .timestamp-kwd { color: #5f9ea0; }
+  .right  { margin-left: auto; margin-right: 0px;  text-align: right; }
+  .left   { margin-left: 0px;  margin-right: auto; text-align: left; }
+  .center { margin-left: auto; margin-right: auto; text-align: center; }
+  .underline { text-decoration: underline; }
+  #postamble p, #preamble p { font-size: 90%; margin: .2em; }
+  p.verse { margin-left: 3%; }
+  pre {
+    border: 1px solid #ccc;
+    box-shadow: 3px 3px 3px #eee;
+    padding: 8pt;
+    font-family: monospace;
+    overflow: auto;
+    margin: 1.2em;
+  }
+  pre.src {
+    position: relative;
+    overflow: visible;
+    padding-top: 1.2em;
+  }
+  pre.src:before {
+    display: none;
+    position: absolute;
+    background-color: white;
+    top: -10px;
+    right: 10px;
+    padding: 3px;
+    border: 1px solid black;
+  }
+  pre.src:hover:before { display: inline;}
+  pre.src-sh:before    { content: 'sh'; }
+  pre.src-bash:before  { content: 'sh'; }
+  pre.src-emacs-lisp:before { content: 'Emacs Lisp'; }
+  pre.src-R:before     { content: 'R'; }
+  pre.src-perl:before  { content: 'Perl'; }
+  pre.src-java:before  { content: 'Java'; }
+  pre.src-sql:before   { content: 'SQL'; }
+
+  table { border-collapse:collapse; }
+  caption.t-above { caption-side: top; }
+  caption.t-bottom { caption-side: bottom; }
+  td, th { vertical-align:top;  }
+  th.right  { text-align: center;  }
+  th.left   { text-align: center;   }
+  th.center { text-align: center; }
+  td.right  { text-align: right;  }
+  td.left   { text-align: left;   }
+  td.center { text-align: center; }
+  dt { font-weight: bold; }
+  .footpara:nth-child(2) { display: inline; }
+  .footpara { display: block; }
+  .footdef  { margin-bottom: 1em; }
+  .figure { padding: 1em; }
+  .figure p { text-align: center; }
+  .inlinetask {
+    padding: 10px;
+    border: 2px solid gray;
+    margin: 10px;
+    background: #ffffcc;
+  }
+  #org-div-home-and-up
+   { text-align: right; font-size: 70%; white-space: nowrap; }
+  textarea { overflow-x: auto; }
+  .linenr { font-size: smaller }
+  .code-highlighted { background-color: #ffff00; }
+  .org-info-js_info-navigation { border-style: none; }
+  #org-info-js_console-label
+    { font-size: 10px; font-weight: bold; white-space: nowrap; }
+  .org-info-js_search-highlight
+    { background-color: #ffff00; color: #000000; font-weight: bold; }
+  /*]]>*/-->
+</style>
+<script type="text/javascript">
+/*
+@licstart  The following is the entire license notice for the
+JavaScript code in this tag.
+
+Copyright (C) 2012-2013 Free Software Foundation, Inc.
+
+The JavaScript code in this tag is free software: you can
+redistribute it and/or modify it under the terms of the GNU
+General Public License (GNU GPL) as published by the Free Software
+Foundation, either version 3 of the License, or (at your option)
+any later version.  The code is distributed WITHOUT ANY WARRANTY;
+without even the implied warranty of MERCHANTABILITY or FITNESS
+FOR A PARTICULAR PURPOSE.  See the GNU GPL for more details.
+
+As additional permission under GNU GPL version 3 section 7, you
+may distribute non-source (e.g., minimized or compacted) forms of
+that code without the copy of the GNU GPL normally required by
+section 4, provided you include this license notice and a URL
+through which recipients can access the Corresponding Source.
+
+
+@licend  The above is the entire license notice
+for the JavaScript code in this tag.
+*/
+<!--/*--><![CDATA[/*><!--*/
+ function CodeHighlightOn(elem, id)
+ {
+   var target = document.getElementById(id);
+   if(null != target) {
+     elem.cacheClassElem = elem.className;
+     elem.cacheClassTarget = target.className;
+     target.className = "code-highlighted";
+     elem.className   = "code-highlighted";
+   }
+ }
+ function CodeHighlightOff(elem, id)
+ {
+   var target = document.getElementById(id);
+   if(elem.cacheClassElem)
+     elem.className = elem.cacheClassElem;
+   if(elem.cacheClassTarget)
+     target.className = elem.cacheClassTarget;
+ }
+/*]]>*///-->
+</script>
+</head>
+<body>
+<div id="content">
+<h1 class="title">dbproxy</h1>
+<div id="table-of-contents">
+<h2>Table of Contents</h2>
+<div id="text-table-of-contents">
+<ul>
+<li><a href="#sec-1">1. 概要</a></li>
+<li><a href="#sec-2">2. 工作原理</a>
+<ul>
+<li><a href="#sec-2-1">2.1. cmd<sub>id</sub> 分段 说明</a>
+<ul>
+<li><a href="#sec-2-1-1">2.1.1. A类</a></li>
+<li><a href="#sec-2-1-2">2.1.2. B类</a></li>
+</ul>
+</li>
+<li><a href="#sec-2-2">2.2. 分配命令号段</a></li>
+<li><a href="#sec-2-3">2.3. cmdid, id 在路由计算中的使用方法</a></li>
+<li><a href="#sec-2-4">2.4. 路由配置xml</a></li>
+</ul>
+</li>
+<li><a href="#sec-3">3. 例子</a>
+<ul>
+<li><a href="#sec-3-1">3.1. 增加新的路由</a></li>
+<li><a href="#sec-3-2">3.2. 增加命令号段</a></li>
+<li><a href="#sec-3-3">3.3. 库拆分</a></li>
+</ul>
+</li>
+</ul>
+</div>
+</div>
+<div id="outline-container-sec-1" class="outline-2">
+<h2 id="sec-1"><span class="section-number-2">1</span> 概要</h2>
+<div class="outline-text-2" id="text-1">
+<p>
+目前 mysql 和dbser程序 分布在多个机器上,导致用户数据分布在不同的机器上 , 为了方便统一操作。 在 dbser 前面放一个前置程序，通过它来实现对所有用户进行操作, 而无需人工地到各台机器上操作。 该前置程序就是 dbproxy.
+</p>
+
+<p>
+dbproxy 目前两个版本，旧版mole,seer 还在使用。在这里介绍的是第二版
+</p>
+</div>
+</div>
+<div id="outline-container-sec-2" class="outline-2">
+<h2 id="sec-2"><span class="section-number-2">2</span> 工作原理</h2>
+<div class="outline-text-2" id="text-2">
+<p>
+向dbproxy 发出的请求报文 头部 18个字节必须是 dbser 标准的头部。即：
+</p>
+
+<div class="org-src-container">
+
+<pre class="src src-c++"><span style="color: #a020f0;">typedef</span> <span style="color: #a020f0;">struct</span> <span style="color: #228b22;">proto_header</span>{
+    <span style="color: #228b22;">uint32_t</span> <span style="color: #a0522d;">proto_length</span>; <span style="color: #b22222;">//</span><span style="color: #b22222;">&#25253;&#25991;&#24635;&#38271;&#24230;</span>
+    <span style="color: #228b22;">uint32_t</span> <span style="color: #a0522d;">proto_id</span>;<span style="color: #b22222;">//</span><span style="color: #b22222;">&#24207;&#21015;&#21495;&#65292;&#38656;&#35201;&#21407;&#26679;&#36820;&#22238;</span>
+    <span style="color: #228b22;">uint16_t</span> <span style="color: #a0522d;">cmd_id</span>; <span style="color: #b22222;">//</span><span style="color: #b22222;">&#21629;&#20196;&#21495;</span>
+    <span style="color: #228b22;">int32_t</span> <span style="color: #a0522d;">result</span>; <span style="color: #b22222;">//</span><span style="color: #b22222;">&#36820;&#22238;&#20540;</span>
+    <span style="color: #228b22;">userid_t</span> <span style="color: #a0522d;">id</span>;  <span style="color: #b22222;">/*</span><span style="color: #b22222;">&#19968;&#33324;&#26159;&#31859;&#31859;&#21495;*/</span>
+} <span style="color: #a020f0;">__attribute__</span>((packed)) <span style="color: #228b22;">PROTO_HEADER</span>;
+</pre>
+</div>
+<p>
+dbproxy 会根据 <b>cmd<sub>id</sub></b>  和 <b>id</b> 进行 计算 ,得到要发出的ip,port, 然后发出报文。收到返回后，再返回给前端 
+</p>
+</div>
+
+<div id="outline-container-sec-2-1" class="outline-3">
+<h3 id="sec-2-1"><span class="section-number-3">2.1</span> cmd<sub>id</sub> 分段 说明</h3>
+<div class="outline-text-3" id="text-2-1">
+</div><div id="outline-container-sec-2-1-1" class="outline-4">
+<h4 id="sec-2-1-1"><span class="section-number-4">2.1.1</span> A类</h4>
+<div class="outline-text-4" id="text-2-1-1">
+<div class="org-src-container">
+
+<pre class="src src-sh">&#33539;&#22260;:      cmd_id&lt;0xC000 
+&#21629;&#20196;&#21495;&#27573;&#38271;&#24230;:512.  
+&#31532;1&#27573;&#65306;  0x0000 - 0x01FF   
+&#31532;2&#27573;&#65306;  0x0200 - 0x03FF   
+&#31532;3&#27573;&#65306;  0x0400 - 0x05FF   
+&#31532;4&#27573;&#65306;  0x0600 - 0x07FF   
+&#31532;5&#27573;&#65306;  0x0800 - 0x09FF   
+&#31532;6&#27573;&#65306;  0x0A00 - 0x0BFF   
+&#31532;7&#27573;&#65306;  0x0C00 - 0x0DFF   
+&#31532;8&#27573;&#65306;  0x0E00 - 0x0FFF   
+&#31532;9&#27573;&#65306;  0x1000 - 0x10FF   
+&#31532;11&#27573;&#65306; 0x1200 - 0x13FF   
+  ...
+  ...
+  ...
+&#31532;n-1&#27573;&#65306;0xBC00 - 0xBDFF   
+&#31532;n&#27573;&#65306;  0xBE00 - 0xBFFF
+</pre>
+</div>
+</div>
+</div>
+<div id="outline-container-sec-2-1-2" class="outline-4">
+<h4 id="sec-2-1-2"><span class="section-number-4">2.1.2</span> B类</h4>
+<div class="outline-text-4" id="text-2-1-2">
+<div class="org-src-container">
+
+<pre class="src src-sh">&#33539;&#22260;:      cmd_id&gt;=0xC000 
+&#21629;&#20196;&#21495;&#27573;&#38271;&#24230;:64.  
+
+&#31532;1&#27573;&#65306;  0xC000 - 0xC01F   
+&#31532;2&#27573;&#65306;  0xC020 - 0xC03F   
+&#31532;3&#27573;&#65306;  0xC040 - 0xC05F   
+&#31532;4&#27573;&#65306;  0xC060 - 0xC07F   
+&#31532;5&#27573;&#65306;  0xC080 - 0xC09F   
+&#31532;6&#27573;&#65306;  0xC0A0 - 0xC0BF   
+&#31532;7&#27573;&#65306;  0xC0C0 - 0xC0DF   
+&#31532;8&#27573;&#65306;  0xC0E0 - 0xC0FF   
+&#31532;9&#27573;&#65306;  0xC100 - 0xC01F   
+&#31532;10&#27573;&#65306; 0xC120 - 0xC03F   
+  ...
+  ...
+  ...
+&#31532;n-1&#27573;&#65306;0xFFC0 - 0xFFDF   
+&#31532;n&#27573;&#65306;  0xFFE0 - 0xFFFF
+</pre>
+</div>
+</div>
+</div>
+</div>
+<div id="outline-container-sec-2-2" class="outline-3">
+<h3 id="sec-2-2"><span class="section-number-3">2.2</span> 分配命令号段</h3>
+<div class="outline-text-3" id="text-2-2">
+<p>
+<b>新项目可使用: 0x8000-0xBFFF</b> ,命令号段长度 为512.
+</p>
+
+<p>
+<b>其它的都为保留段，不能使用</b>
+</p>
+</div>
+</div>
+<div id="outline-container-sec-2-3" class="outline-3">
+<h3 id="sec-2-3"><span class="section-number-3">2.3</span> cmdid, id 在路由计算中的使用方法</h3>
+<div class="outline-text-3" id="text-2-3">
+<p>
+cmdid: 通过cmdid 所在的分段进行路由
+</p>
+
+<p>
+id分为三种:
+</p>
+
+<p>
+1: 不根据 id 路由
+</p>
+
+<p>
+2: 根据 id%10 (id 的最后一位)  路由 .  (一般是由于用户数据分到10个库中)
+</p>
+
+<p>
+3: 根据 id%100 (id 的最后两位)  路由.  (一般是由于用户数据分到100个库中)
+</p>
+</div>
+</div>
+<div id="outline-container-sec-2-4" class="outline-3">
+<h3 id="sec-2-4"><span class="section-number-3">2.4</span> 路由配置xml</h3>
+<div class="outline-text-3" id="text-2-4">
+<p>
+route.xml 中 配置 路由规则, 以下是配置项说明 
+</p>
+
+<div class="org-src-container">
+
+<pre class="src src-xml"><span style="color: #b22222;">&lt;!--</span><span style="color: #b22222;"> </span>
+<span style="color: #b22222;">  name : &#29992;&#20110;&#35828;&#26126;&#65292;&#26080;&#23454;&#38469;&#29992;&#22788;</span>
+<span style="color: #b22222;">  db_type:  &#23601;&#26159; id&#30340;&#36335;&#30001;&#20998;&#31867;, &#26377;&#19977;&#20010;&#20540; </span>
+<span style="color: #b22222;">        1  : &#26681;&#25454;  id%1 &#36335;&#30001; &#65288;&#25152;&#26377;&#30340;&#37117;&#21040;&#19968;&#22788;&#65289; . (&#19968;&#33324;&#26159;&#29992;&#20110;&#29992;&#25143;&#25968;&#25454;&#19981;&#20998;&#24211;&#26102;)</span>
+<span style="color: #b22222;">        10 : &#26681;&#25454; id%10 (id &#30340;&#26368;&#21518;&#19968;&#20301;)  &#36335;&#30001; .  (&#19968;&#33324;&#26159;&#29992;&#20110;&#29992;&#25143;&#25968;&#25454;&#20998;&#21040;10&#20010;&#24211;&#20013;)</span>
+<span style="color: #b22222;">        100: &#26681;&#25454; id%100 (id &#30340;&#26368;&#21518;&#20004;&#20301;)  &#36335;&#30001;.  (&#19968;&#33324;&#26159;&#29992;&#20110;&#29992;&#25143;&#25968;&#25454;&#20998;&#21040;100&#20010;&#24211;&#20013;)</span>
+<span style="color: #b22222;">        &#35813;&#20540;&#20250;&#24433;&#21709;&#21040; db_startid ,db_endid &#30340;&#37197;&#32622;</span>
+<span style="color: #b22222;">  cmd_bind: &#37197;&#32622;&#21738;&#20123;&#21629;&#20196;&#21495;&#27573;&#36866;&#21512;&#35813;&#35268;&#21017; ,cmdid &#20026;&#35813;&#21629;&#20196;&#21495;&#27573;&#30340;&#39318;&#20010;&#21629;&#20196;</span>
+
+<span style="color: #b22222;">  ip_bind:  &#37197;&#32622; id  &#30340;&#35268;&#21017; , &#35774;&#32622;:v = id%db_type;</span>
+<span style="color: #b22222;">            &#24403; v &#22312; &#21305;&#37197; &#26576;&#19968;&#20010; [db_startid,db_endid ]&#26102;&#65292;&#20351;&#29992;&#35813;&#26465;&#35760;&#24405;&#30340; ip,port</span>
+<span style="color: #b22222;">            &#22914; id = 50008,  &#21017; v=50008%10=8 , &#31526;&#21512;&#31532;&#20108;&#26465; [5,9]&#65292;:&#24471;&#21040; ip="10.1.1.8"  port="30004" </span>
+
+<span style="color: #b22222;">            db_startid ,db_endid &#20540;&#33539;&#22260;:</span>
+<span style="color: #b22222;">            db_type = 1:    [0,0]</span>
+<span style="color: #b22222;">            db_type = 10:   [0,9]</span>
+<span style="color: #b22222;">            db_type = 100:  [0,99]</span>
+
+<span style="color: #b22222;"> </span><span style="color: #b22222;">--&gt;</span>
+&lt;<span style="color: #0000ff;">route_item</span>  <span style="color: #a0522d;">name</span>=<span style="color: #8b2252;">"</span><span style="color: #8b2252;">XXX&#29992;&#25143;&#25968;&#25454;</span><span style="color: #8b2252;">"</span> <span style="color: #a0522d;">db_type</span>=<span style="color: #8b2252;">"</span><span style="color: #8b2252;">10</span><span style="color: #8b2252;">"</span> &gt;
+    &lt;<span style="color: #0000ff;">cmd_bind</span>&gt;
+        &lt;<span style="color: #0000ff;">item</span> <span style="color: #a0522d;">cmdid</span>=<span style="color: #8b2252;">"</span><span style="color: #8b2252;">0x8000</span><span style="color: #8b2252;">"</span>&gt; &lt;/<span style="color: #0000ff;">item</span>&gt;
+        &lt;<span style="color: #0000ff;">item</span> <span style="color: #a0522d;">cmdid</span>=<span style="color: #8b2252;">"</span><span style="color: #8b2252;">0x8200</span><span style="color: #8b2252;">"</span>&gt; &lt;/<span style="color: #0000ff;">item</span>&gt;
+    &lt;/<span style="color: #0000ff;">cmd_bind</span>&gt;
+    &lt;<span style="color: #0000ff;">ip_bind</span>&gt;
+<span style="color: #b22222;">&lt;!--</span><span style="color: #b22222;">  ip,port : &#20027;&#36830;&#25509;&#65292; bak_ip bak_port&#65306;&#24403;&#20027;&#36830;&#25509;&#22833;&#25928;&#26102;&#65292;&#20351;&#29992;&#30340;&#22791;&#20221;&#36830;&#25509;   </span><span style="color: #b22222;">--&gt;</span>
+        &lt;<span style="color: #0000ff;">item</span>   <span style="color: #a0522d;">db_startid</span>=<span style="color: #8b2252;">"</span><span style="color: #8b2252;">0</span><span style="color: #8b2252;">"</span>  <span style="color: #a0522d;">db_endid</span>=<span style="color: #8b2252;">"</span><span style="color: #8b2252;">4</span><span style="color: #8b2252;">"</span> <span style="color: #a0522d;">ip</span>=<span style="color: #8b2252;">"</span><span style="color: #8b2252;">10.1.1.5</span><span style="color: #8b2252;">"</span>  <span style="color: #a0522d;">port</span>=<span style="color: #8b2252;">"</span><span style="color: #8b2252;">30004</span><span style="color: #8b2252;">"</span> <span style="color: #a0522d;">bak_ip</span>=<span style="color: #8b2252;">"</span><span style="color: #8b2252;">10.1.1.10</span><span style="color: #8b2252;">"</span> <span style="color: #a0522d;">bak_port</span>=<span style="color: #8b2252;">"</span><span style="color: #8b2252;">30004</span><span style="color: #8b2252;">"</span> /&gt;
+        &lt;<span style="color: #0000ff;">item</span>   <span style="color: #a0522d;">db_startid</span>=<span style="color: #8b2252;">"</span><span style="color: #8b2252;">5</span><span style="color: #8b2252;">"</span>  <span style="color: #a0522d;">db_endid</span>=<span style="color: #8b2252;">"</span><span style="color: #8b2252;">9</span><span style="color: #8b2252;">"</span> <span style="color: #a0522d;">ip</span>=<span style="color: #8b2252;">"</span><span style="color: #8b2252;">10.1.1.8</span><span style="color: #8b2252;">"</span>  <span style="color: #a0522d;">port</span>=<span style="color: #8b2252;">"</span><span style="color: #8b2252;">30004</span><span style="color: #8b2252;">"</span> /&gt;
+
+    &lt;/<span style="color: #0000ff;">ip_bind</span>&gt;
+&lt;/<span style="color: #0000ff;">route_item</span>&gt;
+</pre>
+</div>
+</div>
+</div>
+</div>
+
+<div id="outline-container-sec-3" class="outline-2">
+<h2 id="sec-3"><span class="section-number-2">3</span> 例子</h2>
+<div class="outline-text-2" id="text-3">
+</div><div id="outline-container-sec-3-1" class="outline-3">
+<h3 id="sec-3-1"><span class="section-number-3">3.1</span> 增加新的路由</h3>
+<div class="outline-text-3" id="text-3-1">
+<p>
+mole 用户数据 分100库 
+</p>
+
+<p>
+命令号段是 0x8400-0x85FF
+</p>
+
+<p>
+userid 尾号 00-79 的数据 对应的  dbser ip: 10.1.1.5  port 11001
+</p>
+
+<p>
+userid 尾号 80-99 的数据 对应的  dbser ip: 10.1.1.10  port 11001
+</p>
+
+<div class="org-src-container">
+
+<pre class="src src-xml">&lt;<span style="color: #0000ff;">route_item</span>  <span style="color: #a0522d;">name</span>=<span style="color: #8b2252;">"</span><span style="color: #8b2252;">mole </span><span style="color: #8b2252;">"</span> <span style="color: #a0522d;">db_type</span>=<span style="color: #8b2252;">"</span><span style="color: #8b2252;">100</span><span style="color: #8b2252;">"</span> &gt;
+    &lt;<span style="color: #0000ff;">cmd_bind</span>&gt;
+        &lt;<span style="color: #0000ff;">item</span> <span style="color: #a0522d;">cmdid</span>=<span style="color: #8b2252;">"</span><span style="color: #8b2252;">0x8400</span><span style="color: #8b2252;">"</span>&gt; &lt;/<span style="color: #0000ff;">item</span>&gt;
+    &lt;/<span style="color: #0000ff;">cmd_bind</span>&gt;
+    &lt;<span style="color: #0000ff;">ip_bind</span>&gt;
+        &lt;<span style="color: #0000ff;">item</span>   <span style="color: #a0522d;">db_startid</span>=<span style="color: #8b2252;">"</span><span style="color: #8b2252;">0</span><span style="color: #8b2252;">"</span>  <span style="color: #a0522d;">db_endid</span>=<span style="color: #8b2252;">"</span><span style="color: #8b2252;">79</span><span style="color: #8b2252;">"</span> <span style="color: #a0522d;">ip</span>=<span style="color: #8b2252;">"</span><span style="color: #8b2252;">10.1.1.5</span><span style="color: #8b2252;">"</span>  <span style="color: #a0522d;">port</span>=<span style="color: #8b2252;">"</span><span style="color: #8b2252;">11001</span><span style="color: #8b2252;">"</span> /&gt;
+        &lt;<span style="color: #0000ff;">item</span>   <span style="color: #a0522d;">db_startid</span>=<span style="color: #8b2252;">"</span><span style="color: #8b2252;">80</span><span style="color: #8b2252;">"</span>  <span style="color: #a0522d;">db_endid</span>=<span style="color: #8b2252;">"</span><span style="color: #8b2252;">99</span><span style="color: #8b2252;">"</span> <span style="color: #a0522d;">ip</span>=<span style="color: #8b2252;">"</span><span style="color: #8b2252;">10.1.1.10</span><span style="color: #8b2252;">"</span>  <span style="color: #a0522d;">port</span>=<span style="color: #8b2252;">"</span><span style="color: #8b2252;">11001</span><span style="color: #8b2252;">"</span> /&gt;
+    &lt;/<span style="color: #0000ff;">ip_bind</span>&gt;
+&lt;/<span style="color: #0000ff;">route_item</span>&gt;
+</pre>
+</div>
+</div>
+</div>
+<div id="outline-container-sec-3-2" class="outline-3">
+<h3 id="sec-3-2"><span class="section-number-3">3.2</span> 增加命令号段</h3>
+<div class="outline-text-3" id="text-3-2">
+<p>
+命令号段用完了，要再加新的段 : 0x8600-0x87FF
+</p>
+
+<div class="org-src-container">
+
+<pre class="src src-xml">&lt;<span style="color: #0000ff;">route_item</span>  <span style="color: #a0522d;">name</span>=<span style="color: #8b2252;">"</span><span style="color: #8b2252;">mole </span><span style="color: #8b2252;">"</span> <span style="color: #a0522d;">db_type</span>=<span style="color: #8b2252;">"</span><span style="color: #8b2252;">100</span><span style="color: #8b2252;">"</span> &gt;
+    &lt;<span style="color: #0000ff;">cmd_bind</span>&gt;
+        &lt;<span style="color: #0000ff;">item</span> <span style="color: #a0522d;">cmdid</span>=<span style="color: #8b2252;">"</span><span style="color: #8b2252;">0x8400</span><span style="color: #8b2252;">"</span>&gt; &lt;/<span style="color: #0000ff;">item</span>&gt;
+    <span style="color: #b22222;">&lt;!--</span><span style="color: #b22222;">&#26032;&#21152;&#30340;&#27573; </span><span style="color: #b22222;">--&gt;</span>
+        &lt;<span style="color: #0000ff;">item</span> <span style="color: #a0522d;">cmdid</span>=<span style="color: #8b2252;">"</span><span style="color: #8b2252;">0x8600</span><span style="color: #8b2252;">"</span>&gt; &lt;/<span style="color: #0000ff;">item</span>&gt;
+    &lt;/<span style="color: #0000ff;">cmd_bind</span>&gt;
+    &lt;<span style="color: #0000ff;">ip_bind</span>&gt;
+        &lt;<span style="color: #0000ff;">item</span>   <span style="color: #a0522d;">db_startid</span>=<span style="color: #8b2252;">"</span><span style="color: #8b2252;">0</span><span style="color: #8b2252;">"</span>  <span style="color: #a0522d;">db_endid</span>=<span style="color: #8b2252;">"</span><span style="color: #8b2252;">79</span><span style="color: #8b2252;">"</span> <span style="color: #a0522d;">ip</span>=<span style="color: #8b2252;">"</span><span style="color: #8b2252;">10.1.1.5</span><span style="color: #8b2252;">"</span>  <span style="color: #a0522d;">port</span>=<span style="color: #8b2252;">"</span><span style="color: #8b2252;">11001</span><span style="color: #8b2252;">"</span> /&gt;
+        &lt;<span style="color: #0000ff;">item</span>   <span style="color: #a0522d;">db_startid</span>=<span style="color: #8b2252;">"</span><span style="color: #8b2252;">80</span><span style="color: #8b2252;">"</span>  <span style="color: #a0522d;">db_endid</span>=<span style="color: #8b2252;">"</span><span style="color: #8b2252;">99</span><span style="color: #8b2252;">"</span> <span style="color: #a0522d;">ip</span>=<span style="color: #8b2252;">"</span><span style="color: #8b2252;">10.1.1.10</span><span style="color: #8b2252;">"</span>  <span style="color: #a0522d;">port</span>=<span style="color: #8b2252;">"</span><span style="color: #8b2252;">11001</span><span style="color: #8b2252;">"</span> /&gt;
+    &lt;/<span style="color: #0000ff;">ip_bind</span>&gt;
+&lt;/<span style="color: #0000ff;">route_item</span>&gt;
+</pre>
+</div>
+</div>
+</div>
+<div id="outline-container-sec-3-3" class="outline-3">
+<h3 id="sec-3-3"><span class="section-number-3">3.3</span> 库拆分</h3>
+<div class="outline-text-3" id="text-3-3">
+<p>
+将 40-79 的库 从10.1.1.5  迁移到 10.1.1.20
+</p>
+
+
+<div class="org-src-container">
+
+<pre class="src src-xml">&lt;<span style="color: #0000ff;">route_item</span>  <span style="color: #a0522d;">name</span>=<span style="color: #8b2252;">"</span><span style="color: #8b2252;">mole </span><span style="color: #8b2252;">"</span> <span style="color: #a0522d;">db_type</span>=<span style="color: #8b2252;">"</span><span style="color: #8b2252;">100</span><span style="color: #8b2252;">"</span> &gt;
+    &lt;<span style="color: #0000ff;">cmd_bind</span>&gt;
+        &lt;<span style="color: #0000ff;">item</span> <span style="color: #a0522d;">cmdid</span>=<span style="color: #8b2252;">"</span><span style="color: #8b2252;">0x8400</span><span style="color: #8b2252;">"</span>&gt; &lt;/<span style="color: #0000ff;">item</span>&gt;
+        &lt;<span style="color: #0000ff;">item</span> <span style="color: #a0522d;">cmdid</span>=<span style="color: #8b2252;">"</span><span style="color: #8b2252;">0x8600</span><span style="color: #8b2252;">"</span>&gt; &lt;/<span style="color: #0000ff;">item</span>&gt;
+    &lt;<span style="color: #0000ff;">ip_bind</span>&gt;
+        &lt;<span style="color: #0000ff;">item</span>   <span style="color: #a0522d;">db_startid</span>=<span style="color: #8b2252;">"</span><span style="color: #8b2252;">0</span><span style="color: #8b2252;">"</span>  <span style="color: #a0522d;">db_endid</span>=<span style="color: #8b2252;">"</span><span style="color: #8b2252;">39</span><span style="color: #8b2252;">"</span> <span style="color: #a0522d;">ip</span>=<span style="color: #8b2252;">"</span><span style="color: #8b2252;">10.1.1.5</span><span style="color: #8b2252;">"</span>  <span style="color: #a0522d;">port</span>=<span style="color: #8b2252;">"</span><span style="color: #8b2252;">11001</span><span style="color: #8b2252;">"</span> /&gt;
+        &lt;<span style="color: #0000ff;">item</span>   <span style="color: #a0522d;">db_startid</span>=<span style="color: #8b2252;">"</span><span style="color: #8b2252;">40</span><span style="color: #8b2252;">"</span>  <span style="color: #a0522d;">db_endid</span>=<span style="color: #8b2252;">"</span><span style="color: #8b2252;">79</span><span style="color: #8b2252;">"</span> <span style="color: #a0522d;">ip</span>=<span style="color: #8b2252;">"</span><span style="color: #8b2252;">10.1.1.20</span><span style="color: #8b2252;">"</span>  <span style="color: #a0522d;">port</span>=<span style="color: #8b2252;">"</span><span style="color: #8b2252;">11001</span><span style="color: #8b2252;">"</span> /&gt;
+        &lt;<span style="color: #0000ff;">item</span>   <span style="color: #a0522d;">db_startid</span>=<span style="color: #8b2252;">"</span><span style="color: #8b2252;">80</span><span style="color: #8b2252;">"</span>  <span style="color: #a0522d;">db_endid</span>=<span style="color: #8b2252;">"</span><span style="color: #8b2252;">99</span><span style="color: #8b2252;">"</span> <span style="color: #a0522d;">ip</span>=<span style="color: #8b2252;">"</span><span style="color: #8b2252;">10.1.1.10</span><span style="color: #8b2252;">"</span>  <span style="color: #a0522d;">port</span>=<span style="color: #8b2252;">"</span><span style="color: #8b2252;">11001</span><span style="color: #8b2252;">"</span> /&gt;
+    &lt;/<span style="color: #0000ff;">ip_bind</span>&gt;
+&lt;/<span style="color: #0000ff;">route_item</span>&gt;
+</pre>
+</div>
+</div>
+</div>
+</div>
+</div>
+<div id="postamble" class="status">
+<p class="author">Author: jim</p>
+<p class="date">Created: 2014-01-10 五 15:42</p>
+<p class="creator"><a href="http://www.gnu.org/software/emacs/">Emacs</a> 24.2.1 (<a href="http://orgmode.org">Org</a> mode 8.2.5a)</p>
+<p class="validation"><a href="http://validator.w3.org/check?uri=referer">Validate</a></p>
+</div>
+</body>
+</html>

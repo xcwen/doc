@@ -1,0 +1,698 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+               "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en">
+<head>
+<title>tip</title>
+<meta http-equiv="Content-Type" content="text/html;charset=utf-8"/>
+<meta name="title" content="tip"/>
+<meta name="generator" content="Org-mode"/>
+<meta name="generated" content="2014-12-17T10:35+0800"/>
+<meta name="author" content="jim"/>
+<meta name="description" content=""/>
+<meta name="keywords" content=""/>
+<style type="text/css">
+ <!--/*--><![CDATA[/*><!--*/
+  html { font-family: Times, serif; font-size: 12pt; }
+  .title  { text-align: center; }
+  .todo   { color: red; }
+  .done   { color: green; }
+  .tag    { background-color: #add8e6; font-weight:normal }
+  .target { }
+  .timestamp { color: #bebebe; }
+  .timestamp-kwd { color: #5f9ea0; }
+  .right  {margin-left:auto; margin-right:0px;  text-align:right;}
+  .left   {margin-left:0px;  margin-right:auto; text-align:left;}
+  .center {margin-left:auto; margin-right:auto; text-align:center;}
+  p.verse { margin-left: 3% }
+  pre {
+	border: 1pt solid #AEBDCC;
+	background-color: #F3F5F7;
+	padding: 5pt;
+	font-family: courier, monospace;
+        font-size: 90%;
+        overflow:auto;
+  }
+  table { border-collapse: collapse; }
+  td, th { vertical-align: top;  }
+  th.right  { text-align:center;  }
+  th.left   { text-align:center;   }
+  th.center { text-align:center; }
+  td.right  { text-align:right;  }
+  td.left   { text-align:left;   }
+  td.center { text-align:center; }
+  dt { font-weight: bold; }
+  div.figure { padding: 0.5em; }
+  div.figure p { text-align: center; }
+  div.inlinetask {
+    padding:10px;
+    border:2px solid gray;
+    margin:10px;
+    background: #ffffcc;
+  }
+  textarea { overflow-x: auto; }
+  .linenr { font-size:smaller }
+  .code-highlighted {background-color:#ffff00;}
+  .org-info-js_info-navigation { border-style:none; }
+  #org-info-js_console-label { font-size:10px; font-weight:bold;
+                               white-space:nowrap; }
+  .org-info-js_search-highlight {background-color:#ffff00; color:#000000;
+                                 font-weight:bold; }
+  /*]]>*/-->
+</style>
+<script type="text/javascript">
+/*
+@licstart  The following is the entire license notice for the
+JavaScript code in this tag.
+
+Copyright (C) 2012-2013 Free Software Foundation, Inc.
+
+The JavaScript code in this tag is free software: you can
+redistribute it and/or modify it under the terms of the GNU
+General Public License (GNU GPL) as published by the Free Software
+Foundation, either version 3 of the License, or (at your option)
+any later version.  The code is distributed WITHOUT ANY WARRANTY;
+without even the implied warranty of MERCHANTABILITY or FITNESS
+FOR A PARTICULAR PURPOSE.  See the GNU GPL for more details.
+
+As additional permission under GNU GPL version 3 section 7, you
+may distribute non-source (e.g., minimized or compacted) forms of
+that code without the copy of the GNU GPL normally required by
+section 4, provided you include this license notice and a URL
+through which recipients can access the Corresponding Source.
+
+
+@licend  The above is the entire license notice
+for the JavaScript code in this tag.
+*/
+<!--/*--><![CDATA[/*><!--*/
+ function CodeHighlightOn(elem, id)
+ {
+   var target = document.getElementById(id);
+   if(null != target) {
+     elem.cacheClassElem = elem.className;
+     elem.cacheClassTarget = target.className;
+     target.className = "code-highlighted";
+     elem.className   = "code-highlighted";
+   }
+ }
+ function CodeHighlightOff(elem, id)
+ {
+   var target = document.getElementById(id);
+   if(elem.cacheClassElem)
+     elem.className = elem.cacheClassElem;
+   if(elem.cacheClassTarget)
+     target.className = elem.cacheClassTarget;
+ }
+/*]]>*///-->
+</script>
+
+</head>
+<body>
+
+<div id="preamble">
+
+</div>
+
+<div id="content">
+<h1 class="title">tip</h1>
+
+
+<div id="table-of-contents">
+<h2>Table of Contents</h2>
+<div id="text-table-of-contents">
+<ul>
+<li><a href="#sec-1">1 Cpp</a>
+<ul>
+<li><a href="#sec-1-1">1.1 检查是否存在成员函数</a></li>
+<li><a href="#sec-1-2">1.2 遍历中删除</a></li>
+<li><a href="#sec-1-3">1.3 C regex 匹配汉字的方法</a></li>
+</ul>
+</li>
+<li><a href="#sec-2">2 wireshark 过滤出有数据的记录</a></li>
+<li><a href="#sec-3">3 cmake</a>
+<ul>
+<li><a href="#sec-3-1">3.1 生成 compile<sub>commands</sub>.json</a></li>
+<li><a href="#sec-3-2">3.2 查看编译时  运行的完整命令</a></li>
+<li><a href="#sec-3-3">3.3 编译某一个文件</a></li>
+</ul>
+</li>
+<li><a href="#sec-4">4 查看程序开启的时间</a></li>
+<li><a href="#sec-5">5 core 文件 产生配置</a></li>
+<li><a href="#sec-6">6 core 文件调试</a>
+<ul>
+<li><a href="#sec-6-1">6.1 命令: bt</a></li>
+<li><a href="#sec-6-2">6.2 命令: fr  [n]</a></li>
+<li><a href="#sec-6-3">6.3 命令: p</a></li>
+</ul>
+</li>
+<li><a href="#sec-7">7 mysql 语句</a>
+<ul>
+<li><a href="#sec-7-1">7.1 insert  ignore</a></li>
+<li><a href="#sec-7-2">7.2 授权</a></li>
+<li><a href="#sec-7-3">7.3 create table</a></li>
+<li><a href="#sec-7-4">7.4 if</a></li>
+</ul>
+</li>
+<li><a href="#sec-8">8 ubuntu</a>
+<ul>
+<li><a href="#sec-8-1">8.1 flash 本地缓存  无法点击</a></li>
+<li><a href="#sec-8-2">8.2 /etc/grub.d/10<sub>linux</sub></a></li>
+</ul>
+</li>
+</ul>
+</div>
+</div>
+
+<div id="outline-container-1" class="outline-2">
+<h2 id="sec-1"><span class="section-number-2">1</span> Cpp</h2>
+<div class="outline-text-2" id="text-1">
+
+
+</div>
+
+<div id="outline-container-1-1" class="outline-3">
+<h3 id="sec-1-1"><span class="section-number-3">1.1</span> 检查是否存在成员函数</h3>
+<div class="outline-text-3" id="text-1-1">
+
+
+
+
+<pre class="example">class HasFoo
+{
+public :
+    template &lt;typename C, void (C::*) ()&gt; class SFINAE {};
+    template &lt;typename C&gt; static bool test (SFINAE&lt;C, &amp;C::foo&gt; *)
+    {
+        return true;
+    }
+    template &lt;typename C&gt; static bool test (...)
+    {
+        return false;
+    }
+};
+
+class B
+{
+public :
+
+    virtual void foo () {}
+};
+
+class D1 : public B
+{
+public :
+    void foo () {}
+
+};
+
+
+class D3 : public B {};
+
+#include &lt;stdio.h&gt;
+int main ()
+{
+    bool ret=HasFoo::test&lt;B&gt;(0);
+    printf("%d\n",ret );
+    ret=HasFoo::test&lt;D1&gt;(0);
+    printf("%d\n",ret );
+    ret=HasFoo::test&lt;D3&gt;(0);
+    printf("%d\n",ret );
+}
+
+</pre>
+
+
+
+<pre class="example">#输出
+jim@jim-destop:~$ a.out 
+1
+1
+0
+</pre>
+
+
+</div>
+
+</div>
+
+<div id="outline-container-1-2" class="outline-3">
+<h3 id="sec-1-2"><span class="section-number-3">1.2</span> 遍历中删除</h3>
+<div class="outline-text-3" id="text-1-2">
+
+
+
+
+<pre class="example">//以下代码不要乱修改!
+for(it=this-&gt;userid_info_map.find(userid);it != this-&gt;userid_info_map.end();){
+    if( it-&gt;second.lastlogin_time&lt;lastlogin_time_mix) {
+        this-&gt;userid_info_map.erase(it++);
+    }else{
+        it++;
+    }
+}
+</pre>
+
+
+</div>
+
+</div>
+
+<div id="outline-container-1-3" class="outline-3">
+<h3 id="sec-1-3"><span class="section-number-3">1.3</span> C regex 匹配汉字的方法</h3>
+<div class="outline-text-3" id="text-1-3">
+
+
+
+
+<pre class="example">
+#include   &lt;stdio.h&gt;
+#include &lt;regex.h&gt;
+#include &lt;stdlib.h&gt;
+int check_nick (  const char *  nick){
+    regex_t re;
+    int ret;
+    regmatch_t pm[10];
+    if ((ret= regcomp(&amp;re, "^\\([一-龠]\\|[a-zA-Z]\\)\\([一-龠]\\|[0-9a-zA-Z]\\)\\{8,18\\}$" , 0)) == 0) {
+        if ((ret= regexec(&amp;re,nick, 10, pm , 0)) == 0) {
+
+            regfree(&amp;re);
+            return 1;
+        }else{
+            regfree(&amp;re);
+        }
+    }
+    return 0;
+}
+
+int main(int argc, char *argv[])
+{
+    int ret=check_nick(argv[1]);
+    printf(" check ret=%d \n", ret );
+}
+
+</pre>
+
+
+<p>
+直接这样是不行的:
+</p>
+
+
+<pre class="example">
+#include   &lt;stdio.h&gt;
+#include &lt;regex.h&gt;
+#include &lt;stdlib.h&gt;
+int check_nick (  const char *  nick){
+    regex_t re;
+    int ret;
+    regmatch_t pm[10];
+    /*这样做是不行的*/
+    if ((ret= regcomp(&amp;re, "^[一-龠a-zA-Z][一-龠0-9a-zA-Z]\\{8,18\\}$" , 0)) == 0) {
+        if ((ret= regexec(&amp;re,nick, 10, pm , 0)) == 0) {
+
+            regfree(&amp;re);
+            return 1;
+        }else{
+            regfree(&amp;re);
+        }
+    }
+    return 0;
+}
+
+int main(int argc, char *argv[])
+{
+    int ret=check_nick(argv[1]);
+    printf(" check ret=%d \n", ret );
+}
+
+
+</pre>
+
+
+
+
+</div>
+</div>
+
+</div>
+
+<div id="outline-container-2" class="outline-2">
+<h2 id="sec-2"><span class="section-number-2">2</span> wireshark 过滤出有数据的记录</h2>
+<div class="outline-text-2" id="text-2">
+
+<p>过滤出有数据的记录: tcp.len&gt;0  
+过滤出有什么数据的记录: tcp.len&gt;0   &amp;&amp; tcp contains  f0:22:00:00 
+如:查找本机和 10.1.1.5 包含 FF:01:00 的报文
+</p>
+
+
+<pre class="example">ip.addr== 10.1.1.5 and tcp.len&gt;0 and tcp contains FF:01:00
+</pre>
+
+
+</div>
+
+</div>
+
+<div id="outline-container-3" class="outline-2">
+<h2 id="sec-3"><span class="section-number-2">3</span> cmake</h2>
+<div class="outline-text-2" id="text-3">
+
+
+</div>
+
+<div id="outline-container-3-1" class="outline-3">
+<h3 id="sec-3-1"><span class="section-number-3">3.1</span> 生成 compile<sub>commands</sub>.json</h3>
+<div class="outline-text-3" id="text-3-1">
+
+<p>cmake -DCMAKE<sub>EXPORT</sub><sub>COMPILE</sub><sub>COMMANDS</sub>=1  ../
+</p>
+<p>
+rc -J  #=&gt; rdm
+</p>
+</div>
+
+</div>
+
+<div id="outline-container-3-2" class="outline-3">
+<h3 id="sec-3-2"><span class="section-number-3">3.2</span> 查看编译时  运行的完整命令</h3>
+<div class="outline-text-3" id="text-3-2">
+
+
+
+
+<pre class="example">cd build #makefile 所在位置
+make VERBOSE=t
+</pre>
+
+
+
+</div>
+
+</div>
+
+<div id="outline-container-3-3" class="outline-3">
+<h3 id="sec-3-3"><span class="section-number-3">3.3</span> 编译某一个文件</h3>
+<div class="outline-text-3" id="text-3-3">
+
+
+
+
+
+<pre class="example">cd build
+make xxxx.cpp.o 
+</pre>
+
+
+
+
+</div>
+</div>
+
+</div>
+
+<div id="outline-container-4" class="outline-2">
+<h2 id="sec-4"><span class="section-number-2">4</span> 查看程序开启的时间</h2>
+<div class="outline-text-2" id="text-4">
+
+<p>ps -eo pid,lstart,cmd
+</p>
+</div>
+
+</div>
+
+<div id="outline-container-5" class="outline-2">
+<h2 id="sec-5"><span class="section-number-2">5</span> core 文件 产生配置</h2>
+<div class="outline-text-2" id="text-5">
+
+<p>　使用ulimit -a可以查看系统core文件的大小限制;使用ulimit -c [kbytes]可以设置系统允许生成的core文件大小，例如
+</p>
+<p>
+　　ulimit -c 0 不产生core文件
+</p>
+<p>
+　　ulimit -c 100 设置core文件最大为100k
+</p>
+<p>
+　　ulimit -c unlimited 不限制core文件大小
+</p>
+<p>
+　除此之外，还可以在/proc/sys/kernel/core<sub>pattern里设置core文件的文件名模板，详情请看core的官方man手册</sub>
+</p></div>
+
+</div>
+
+<div id="outline-container-6" class="outline-2">
+<h2 id="sec-6"><span class="section-number-2">6</span> core 文件调试</h2>
+<div class="outline-text-2" id="text-6">
+
+<p>gdb 程序名 core文件
+如 gdb mole<sub>online</sub> core.2833
+</p>
+<p> 
+进入后
+</p>
+
+</div>
+
+<div id="outline-container-6-1" class="outline-3">
+<h3 id="sec-6-1"><span class="section-number-3">6.1</span> 命令: bt</h3>
+<div class="outline-text-3" id="text-6-1">
+
+<p>列出调用函数的堆栈
+</p>
+</div>
+
+</div>
+
+<div id="outline-container-6-2" class="outline-3">
+<h3 id="sec-6-2"><span class="section-number-3">6.2</span> 命令: fr  [n]</h3>
+<div class="outline-text-3" id="text-6-2">
+
+<p>进入 那个函数 n为调用函数在堆栈中的位置
+</p>
+</div>
+
+</div>
+
+<div id="outline-container-6-3" class="outline-3">
+<h3 id="sec-6-3"><span class="section-number-3">6.3</span> 命令: p</h3>
+<div class="outline-text-3" id="text-6-3">
+
+<p>打印变量
+</p></div>
+</div>
+
+</div>
+
+<div id="outline-container-7" class="outline-2">
+<h2 id="sec-7"><span class="section-number-2">7</span> mysql 语句</h2>
+<div class="outline-text-2" id="text-7">
+
+
+</div>
+
+<div id="outline-container-7-1" class="outline-3">
+<h3 id="sec-7-1"><span class="section-number-3">7.1</span> insert  ignore</h3>
+<div class="outline-text-3" id="text-7-1">
+
+
+
+
+<pre class="example">insert ignore into db_ejabberd.users  select userid,passwd,0 from db_account.t_user_info  ;
+</pre>
+
+
+
+</div>
+
+</div>
+
+<div id="outline-container-7-2" class="outline-3">
+<h3 id="sec-7-2"><span class="section-number-3">7.2</span> 授权</h3>
+<div class="outline-text-3" id="text-7-2">
+
+
+
+
+
+<pre class="example">GRANT select ON UMAN.* TO dbser@localhost 
+      IDENTIFIED BY 'something';
+
+GRANT all ON *.* TO   vuser@10.1.1.88 IDENTIFIED BY 'vuser';
+GRANT all ON *.* TO   root@192.168.0.5 IDENTIFIED BY 'ta0mee';
+
+GRANT all ON *.* TO   vuser@10.1.1.88 IDENTIFIED BY 'vuser';
+
+grant all privileges on ejabberd.* to ejabberd@10.1.14.57 IDENTIFIED BY "ejabberd";
+
+    GRANT select ,delete,update,insert  ON db_tls_admin.* TO    tls_admin@localhost
+      IDENTIFIED BY 'ta0mee';
+
+GRANT select ,delete,update,insert  ON db_tls.* TO    tls_admin@localhost
+      IDENTIFIED BY 'ta0mee';
+</pre>
+
+
+
+
+</div>
+
+</div>
+
+<div id="outline-container-7-3" class="outline-3">
+<h3 id="sec-7-3"><span class="section-number-3">7.3</span> create table</h3>
+<div class="outline-text-3" id="text-7-3">
+
+
+
+
+<pre class="example">
+CREATE TABLE t_20140523_zongzi (
+  userid  int(10)  unsigned NOT NULL default '0',
+  zongzi_1_count int(10) unsigned NOT NULL default '0' COMMENT '每种粽子的个数', 
+  zongzi_2_count int(10) unsigned NOT NULL default '0',
+  zongzi_3_count int(10) unsigned NOT NULL default '0',
+  zongzi_4_count int(10) unsigned NOT NULL default '0',
+  zongzi_5_count int(10) unsigned NOT NULL default '0',
+  opt_date    int(10) unsigned NOT NULL default '0' COMMENT '最后操作日期',  
+  opt_date_count    int(10) unsigned NOT NULL default '0' COMMENT '当天抽了几次',  
+  opt_itemid  int(10) unsigned NOT NULL default '0' COMMENT '这次应该得到的物品',   
+  opt_state   int(10) unsigned NOT NULL default '0'   COMMENT '这次状态:0 未领取,1:已领取',   
+  PRIMARY KEY  (userid )
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+CREATE TABLE t_sysargs (
+  arg_key int(10) unsigned NOT NULL default '0',
+  arg_value int(10) unsigned NOT NULL default '0',
+  PRIMARY KEY  (arg_key)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+CREATE TABLE t_opt_log (
+  logtime int(10) unsigned NOT NULL default '0',
+  userid int(10) unsigned NOT NULL default '0',
+  logtype int(10) unsigned NOT NULL default '0',
+  opttype int(10) unsigned NOT NULL default '0',
+  itemid int(10) unsigned NOT NULL default '0',
+  itemcount int(10) unsigned NOT NULL default '0',
+  data_ex  int(10) unsigned NOT NULL default '0',
+  KEY  (userid,logtime)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+
+
+
+
+CREATE TABLE `t_union` (
+  `area_id` smallint(5) unsigned NOT NULL default '0',
+  `union_id` int(10) unsigned NOT NULL default '0',
+  `create_time` int(10) unsigned NOT NULL default '0',
+  `name` char(32) NOT NULL default '0',
+  `declaration` varchar(256),
+  `level` smallint(5) unsigned NOT NULL default '0',
+  `flag` smallint(5) unsigned NOT NULL default '0',
+  `owner_user_id` int(10) unsigned NOT NULL default '0',
+  `owner_role_tm` int(10) unsigned NOT NULL default '0',
+  `money` int(10) NOT NULL default '0',
+  `nomoney_days` smallint(5) unsigned NOT NULL default '0',
+  `apply_level_limit` smallint(5) unsigned NOT NULL default '0',
+  `apply_prof_limit` smallint(5) unsigned NOT NULL default '0',
+  `apply_check_type` smallint(5) unsigned NOT NULL default '0',
+
+  PRIMARY KEY  (`area_id`,`union_id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+
+CREATE TABLE `t_union_user_01` (
+  `area_id` smallint(5) unsigned NOT NULL default '0',
+  `union_id` int(10) unsigned NOT NULL default '0',
+  `user_id` int(10) unsigned NOT NULL default '0',
+  `role_tm` int(10) unsigned NOT NULL default '0',
+  `job` smallint(5) unsigned NOT NULL default '0',
+  PRIMARY KEY  (`area_id`,`union_id`,`user_id`,`role_tm`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+CREATE TABLE `t_union_user_require` (
+  `area_id` smallint(5) unsigned NOT NULL default '0',
+  `union_id` int(10) unsigned NOT NULL default '0',
+  `user_id` int(10) unsigned NOT NULL default '0',
+  `role_tm` int(10) unsigned NOT NULL default '0',
+  `require_time` int(10) unsigned NOT NULL default '0',
+  PRIMARY KEY  (`area_id`,`union_id`,`user_id`,`role_tm`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+</pre>
+
+
+
+</div>
+
+</div>
+
+<div id="outline-container-7-4" class="outline-3">
+<h3 id="sec-7-4"><span class="section-number-3">7.4</span> if</h3>
+<div class="outline-text-3" id="text-7-4">
+
+
+
+
+<pre class="example">
+drop table if exists UMAN_UNION.t_union_user_log_%02d 
+</pre>
+
+
+
+
+</div>
+</div>
+
+</div>
+
+<div id="outline-container-8" class="outline-2">
+<h2 id="sec-8"><span class="section-number-2">8</span> ubuntu</h2>
+<div class="outline-text-2" id="text-8">
+
+
+</div>
+
+<div id="outline-container-8-1" class="outline-3">
+<h3 id="sec-8-1"><span class="section-number-3">8.1</span> flash 本地缓存  无法点击</h3>
+<div class="outline-text-3" id="text-8-1">
+
+<p>在flash上 右键-全局设置 在打开的新页面选择 “Web 站点存储设置”面板 在里面找到相应的flash地址 把上的数值拉大 或者点击 “不在提示”
+</p>
+</div>
+
+</div>
+
+<div id="outline-container-8-2" class="outline-3">
+<h3 id="sec-8-2"><span class="section-number-3">8.2</span> /etc/grub.d/10<sub>linux</sub></h3>
+<div class="outline-text-3" id="text-8-2">
+
+<p>#!/bin/sh
+exec tail -n +3 $0
+</p>
+<p>
+menuentry 'Deepin install' {
+  set root=(hd0,3)
+  loopback loop  /iso/deepin<sub>2014</sub>.1<sub>amd64</sub>.iso
+  linux (loop)/casper/vmlinuz.efi boot=casper iso-scan/filename=/iso/deepin<sub>2014</sub>.1<sub>amd64</sub>.iso   noprompt noeject
+  initrd (loop)/casper/initrd.lz
+}
+</p>
+
+</div>
+</div>
+</div>
+</div>
+
+<div id="postamble">
+<p class="date">Date: 2014-12-17T10:35+0800</p>
+<p class="author">Author: jim</p>
+<p class="creator"><a href="http://orgmode.org">Org</a> version 7.9.3f with <a href="http://www.gnu.org/software/emacs/">Emacs</a> version 24</p>
+
+
+</div>
+</body>
+</html>

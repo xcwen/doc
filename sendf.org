@@ -1,0 +1,53 @@
+# -*- org -*-
+# +TITLE: 报文重发工具
+
+* 说明
+对于 dbser 这种无状态的程序. 我们在出现bug 时，一般重新将出现bug 的那条协议数据重新发向dbser,就可以重现bug,
+因此 *报文重发工具*  可以快速定位错误
+
+程序下载  [[./adds/sendf.tar.gz][这里]]  
+
+是一个python 程序，复制到 linux 下运行
+
+* 使用方法
+#+BEGIN_SRC   sh
+$ sendf -h 10.1.1.5 -p 30004  16 00 00 00 C9 00 0C 00 50 10 00 00 00 00 58 C3 00 00 00 00 00 00
+
+
+^^^^^^^^^^^^^^^^^^^^^^send buf^^^^^^^^^^^^^^^
+HEADER:
+	protolen:	22
+	protoid:	786633
+	cmdid:		1050
+	result:		0
+	userid:		50008
+pri:len[  4]==========================================================================
+	18	 00 00 00 00                                        ....             
+end:==================================================================================
+
+
+^^^^^^^^^^^^^^^^^^^^^^recv buf^^^^^^^^^^^^^^^
+完整16进制报文:12000000C9000C005010EC03000058C30000
+HEADER:
+	protolen:	18
+	protoid:	786633
+	cmdid:		1050
+	result:		1004
+	userid:		50008
+pri:len[  0]==========================================================================
+end:==================================================================================
+#+END_SRC  
+
+#+BEGIN_SRC   sh
+#说明
+$ sendf --help
+Usage: sendf -h 10.1.1.5 -p 30004  16 00 00 00 C9 00 0C 00 50 10 00 00 00 00 58 C3 00 00 00 00 00 00 
+
+send buffer to server
+
+Options:
+  --version             show program's version number and exit
+  -h HOST, --host=HOST  connect host #连接到的ip
+  -p PORT, --port=PORT  connect port #连接到的port
+  --help                show help
+#+END_SRC  

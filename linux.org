@@ -1,0 +1,36 @@
+# -*- org -*-
+# +TITLE: C++ 
+*  内存越界检查工具 valgrind
+http://www.ibm.com/developerworks/cn/linux/l-cn-valgrind/
+
+
+valgrind --tool=memcheck  --suppressions=./no.supp --gen-suppressions=all --trace-children=yes --leak-check=full -v --time-stamp=yes --log-file=valgrind_log.`date +"%Y%m%d_%H%M%S"` uman_online bench.lua                                                                                                 
+ #+BEGIN_SRC   sh
+#  no.supp  把无关的错误信息过滤  
+{                                                                                           
+   <insert a suppression name here>
+   Memcheck:Value8
+   fun:memcpy
+   obj:*
+   obj:/lib/libc-2.11.3.so
+   obj:/lib/libc-2.11.3.so
+   fun:gen_timestring
+   fun:create_new_logfile
+   fun:shift_logger_file
+   fun:write_to_logger
+}
+{
+   <insert a suppression name here>
+   Memcheck:Value8
+   fun:memcpy
+   obj:*
+   obj:/lib/libc-2.11.3.so
+   obj:/lib/libc-2.11.3.so
+   fun:write_to_logger
+}
+
+
+....
+
+#+END_SRC  
+

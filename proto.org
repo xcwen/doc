@@ -1,0 +1,609 @@
+
+# -*- org -*-
+# +TITLE: 协议平台 
+* 概要
+类似于 google 的 protobuf , 提供php ,python ,c++  序列化对象的生成代码.
+
+提供网页编辑界面 并 输出 规范化的 *协议输出文档*. 可清晰看出相关协议的完整内容。
+
+提供 生成客户端测试协议, 可以对程序 进行 协议级的 有效而且轻便的测试 .
+
+提供 *xml文件读取*,  xml文件的数据可加载到协议平台编辑的结构体里.
+
+有效地和   server_bench, async_server  整合
+
+目前 协议平台支持了几乎公司的所有开发项目。用于定义服务器程序对外提供的协议接口.
+
+
+* 架构图
+[[./images/proto_5.png]]
+
+* 编辑页面使用方法
+
+** 进入协议平台
+*chrome* (不要使用其它浏览器) 中 打开 10.1.1.5/cc 
+
+输入用户名密码(测试  用户名: comm ,  密码: 142857 )
+
+进入界面:
+
+[[./images/proto_1.png]]
+
+
+** 协议项目操作
+可增加，删除,修改 协议项目
+
+协议项目名称规则: 
+
+   1.名称分为两个部分 用 "_" 分开 如: mole_db
+
+   2.在同一个项目（如摩尔）的 *第一个部分要一样* (如 mole_db ,mole_online,mode_switch )
+   
+   命令号显示方式 :  在界面上显示的命令号是以什么方式显示的. 一般dbser的协议是16进制显示的，其它的都为10进制.
+
+
+** 命令操作
+
+例子:
+[[./images/proto_2.png]]
+
+
+需要用到的 结构体和错误码 在以下地方配置
+
+[[./images/proto_3.png]]
+
+ *导入导出xml定义* 就是一个简单的复制结构的方法。
+ 
+将一个结构体的xml定义复制出来，然后在另外一个结构体复制进去。
+
+** 结构体操作
+
+[[./images/proto_4.png]]
+
+
+*公共结构体* 和 *自身定义* 区别
+
+*公共结构体* 是项目级的,如 mole_db 定义的  公共结构体 , 
+在 mole_onine mole_switch 也可以使用.
+
+
+ *自身定义* 只能自己使用，如: mole_db 定义的    *自身定义结构体* 只能在mole_db使用 ,  
+而在mole_online,mole_switch 中是看不到的.
+
+一般是在多个协议项目使用到的结构体才需要用到公共结构体.
+
+** 绑定列表
+一个对命令分类的功能.每个命令都可以加入某几个分类中.
+
+使用场景: online 编辑的协议中，有些要由客户端请求后触发，有些却online 自己主动发出的. 
+
+客户端请求的协议需要写 对应的实现函数. 
+
+一旦将 客户端请求的协议 分类出来， 如 for_cli_request ; 这样程序就可以按 *分类* 生成文件,
+
+里边是分类中的每个命令的信息
+
+内容如下 mole_online_bind_for_cli_request.h 
+
+#+BEGIN_SRC   c++
+	/*1-for_cli_request-客户端请求*/
+	BIND_PROTO_CMD(1010,cli_user_level_up,Cmessage,cli_user_level_up_out,0x3f695426,2)
+	BIND_PROTO_CMD(1011,cli_get_user_attr,Cmessage,cli_get_user_attr_out,0x2abf0e2f,2)
+	BIND_PROTO_CMD(1029,cli_sync_position,cli_sync_position_in,Cmessage,0x872cad30,2)
+	BIND_PROTO_CMD(1031,cli_proto_leave_map,Cmessage,cli_proto_leave_map_out,0x8bd11810,10)
+
+#+END_SRC  
+
+这里包含了协议的 命令号, 命令名称，请求包，返回包 的信息
+
+只要重新定义一下 BIND_PROTO_CMD 宏就可以实现很多 的事情 ,如:
+
+生成回调函数定义 之类的
+
+使用方法如下:
+
+#+BEGIN_SRC   c++
+//函数定义
+#undef  BIND_PROTO_CMD
+#define BIND_PROTO_CMD(cmdid,proto_name,c_in,c_out,md5_tag,bind_bitmap ) \
+    int proto_name( Csprite *p , Cmessage* c_in ) ;
+#include "./proto/mole_online_bind_for_cli_request.h"
+
+
+//初始化数据
+#undef  BIND_PROTO_CMD
+#define BIND_PROTO_CMD(cmdid,proto_name,c_in,c_out,md5_tag,bind_bitmap ) \
+    {cmdid, new (c_in), md5_tag,bind_bitmap ,proto_name },
+
+	Ccmd< P_DEALFUN_T> cmd_list[]={
+#include "./proto/mole_online_bind_for_cli_request.h"
+	};
+    g_cli_cmd_map.initlist(cmd_list, sizeof(cmd_list)/sizeof(cmd_list[0]));
+
+
+#+END_SRC
+
+** 权限分配
+选择协议项目后，在 "其它设置" , 点击 "权限列表"
+
+可以给用户增加删除权限
+
+如给客服平台的更新帐户增加查看权限.
+用户 : kf
+
+[[./images/proto_8.png]]
+
+* 由.tpro文件生成proto.xml 文件
+由于使用web页面编辑方案，很难实现svn 的管理，使用类似protobuf定义文件方案却可以实现
+
+** 文件名称约定
+一个项目 中包含多个文件，如 奥特曼项目 , online ,db,switch,login
+
+那么出现的定义文件有
+#+BEGIN_SRC   sh 
+ultraman.tpro    #公共结构体所在的文件
+ultraman_online.tpro  #online 的协议定义
+ultraman_db.tpro  #db 的协议定义
+ultraman_switch.tpro  #switch 的协议定义
+ultraman_login.tpro  #login 的协议定义
+#+END_SRC  
+
+
+** 可用的类型
+#+BEGIN_SRC   c++
+uint8_t uint16_t uint32_t uint64_t
+
+int8_t  int16_t  int32_t  int64_t
+
+double
+
+char    varchar(变长字符串)
+
+binary  varbinary(变长二进制)
+
+vector<类型>  变长数组
+
+
+class {   //自定义类型
+  uint32_t userid; 
+  char nick[32];
+};
+
+#+END_SRC  
+
+
+
+** 增强功能--支持 定义同一长度
+如很多协议都要使用到nick;
+
+如 char nick[ 32 ];
+
+可以使用 
+#+BEGIN_SRC   c++
+
+/* 在 公共结构体所在的文件 长度定义在  enum_pub_field_len
+各自的定义在  enum_field_len
+
+*/
+enum  enum_pub_field_len {
+	MSG_MAX_LEN = 2048,
+	NICK_LEN = 16, //session 的长度
+};
+
+class xxx {
+  .....
+  char nick[NICK_LEN];
+  .....
+};
+
+#+END_SRC  
+
+
+这样当nick 长度调整了， 需要调整NICK_LEN 就行
+
+
+** 案例文件
+定义文件和c++ 源代码 相似
+
+*ultraman.tpro*:
+#+BEGIN_SRC   c++
+
+//结构体
+//定义长度
+
+enum  enum_pub_field_len {
+	MSG_MAX_LEN = 2048,
+	NICK_LEN = 32, //session 的长度
+};
+
+class uid_role_t {
+	uint32_t		user_id; //米米号 
+	uint32_t		role_tm; //角色创建时间 
+
+};
+
+class  user_info_t {
+	uint32_t  age;   //年龄
+	char nick [NICK_LEN];  //昵称
+	varbinary offline_msg[MSG_MAX_LEN ]; //离线消息
+	varchar title[256]; //标题
+};
+
+#+END_SRC  
+
+*ultraman_online.tpro*:
+#+BEGIN_SRC   c++
+#include "ultraman.tpro"
+
+//注释格式 //说明;绑定列表;错误码
+enum enum_cmd {
+	cli_login_cmd                       = 1001  ,//登陆 ;for_cli_request;cli_session_err 
+	cli_get_user_info_list_cmd          = 1002  ,//得到用户列表;for_cli_request;
+
+};
+enum  enum_field_len {
+	SESSION_LEN= 16, //session 的长度
+};
+
+
+//绑定列表 注释格式 //xxxxx
+enum enum_bind {
+
+	for_reply_cli	= 0, //服务器主动发 
+	for_cli_request	= 1, //客户端请求 
+};
+//错误码列表 注释格式 //xxxxx
+enum enum_error {
+
+	succ	= 0, //成功 
+	cli_area_id_err	= 100002, //服务器异常 
+	cli_session_err	= 100003, //session出错
+
+};
+
+
+class cli_login_in {
+	binary session[SESSION_LEN ];
+	char  nick [ NICK_LEN];
+};
+
+
+
+class cli_get_user_info_list_in {
+	uid_role_t  user;   //用户信息
+};
+
+class cli_get_user_info_list_out {
+	vector <user_info_t > user_list;
+};
+
+#+END_SRC  
+
+
+* 生成代码使用方法
+** 下载文件
+下载 gen_proto 程序  [[./adds/gen_proto.tar.gz][*这里*]] 
+
+*getxml.sh* : 生成代码的shell文件
+
+例子如下:
+
+#+BEGIN_SRC   sh 
+#!/bin/bash
+#固定部分
+cd `dirname $0`
+. ./gen_proto_app/bin/getxml_comm.sh $*
+
+#自定义部分
+get_deal_xml mole_online
+get_deal_xml mole_db
+
+# 复制需要的文件到自己项目中
+cplist=" \
+	mole.cpp\
+	mole.h\
+	mole_online.cpp\
+	mole_online.h\
+	mole_db.cpp\
+	mole_db.h\
+	mole_online_enum.h\
+	mole_online_online_cli_src.cpp\
+	mole_online_bind_for_cli_request.h\
+	mole_db_bind_for_online.h\
+	mole_db_online_db_src.cpp\
+	mole_db_enum.h\
+"
+obj_dir="../src/proto/"
+for  cpfile in $cplist 
+do
+
+	diff ./proto/$cpfile $obj_dir    1>/dev/null 2>&1
+	if [ $? -ne  0 ] ;  then
+        echo "更新 $cpfile"
+	    cp ./proto/$cpfile $obj_dir 
+	fi
+
+done
+
+#+END_SRC  
+
+调整 get_deal_xml  的 参数 ，如设置为  mole_db ,就会拉取mole_db 的相关内容
+
+运行后getxml.sh 后会生成相关代码,最终的目录结构如下 
+#+BEGIN_SRC   sh 
+.
+├── bak
+├── bin
+├── gen_proto_app 
+├── getxml.sh
+├── `php`
+├── plugin
+├── `proto`
+├── `python`
+├── svn-commit.tmp
+├── tools
+└── xml
+#+END_SRC  
+
+生成 c++ ,php ,python 的代码  分别放在  proto ,php ,python 目录 .
+
+** c++ 代码的整合
+都在proto 文件夹中
+
+会生成项目级(mole)的文件
+#+BEGIN_SRC   sh
+#对象序列化代码
+mole.cpp
+mole.h
+#+END_SRC  
+
+还会生成协议项目级的文件
+#+BEGIN_SRC   sh
+#对象序列化代码
+mole_online.cpp
+mole_online.h
+mole_db.cpp
+mole_db.h
+
+#生成命令号，错误码之类的信息
+mole_online_enum.h
+...
+
+#绑定列表文件
+mole_online_bind_for_cli_request.h
+...
+
+#+END_SRC  
+
+对象序列化代码文件需要加入程序中编译
+
+其它文件 视情况整合
+
+** php 代码的整合 
+
+目前主要用于db协议的测试 ， 
+
+** python 代码的整合 
+
+目前主要用于online 协议的测试 ， 
+
+* 打印协议数据
+使用python 生成的代码来打印 协议的16进制报文 
+
+1:程序中需要将收到和接收到的报文打印成16进制格式, 保存到日志 
+
+
+2:查看数据, 例子参照 tools/onlinei, tools/onlineo 
+
+#+BEGIN_SRC   text 
+#onlinei 代码
+../gen_proto/gen_proto_app/bin/cat_proto -b -i -f"cmdid,H,4,2|userid,L,6,4|seqid,L,10,4|result,l,14,4"  -p ../gen_proto/python/ultraman_online_proto.py  $*
+
+#+END_SRC  
+
+#+BEGIN_SRC    text 
+#cat_proto 命令参数
+$ ../gen_proto/gen_proto_app/bin/cat_proto
+Usage: cat_proto 16 00 00 00 C9 00 0C 00 E9 03 00 00 00 00 58 C3 00 00 00 00 00 00 
+
+show proto pkg
+
+Options:
+  --version             show program's version number and exit
+  -h, --help            show this help message and exit
+  -p PY_CODE_FILE, --py_code_file=PY_CODE_FILE
+                        生成的proto文件名:如mole_proto.py
+  -l HEADER_LEN, --header_len=HEADER_LEN
+                        报头长度
+  -H, --cmd_hex_show    命令号是否要十六进制显示
+  -B, --hex_show_buf    是否将buf打印成16进制
+  -i, --is_in_pkg       是否是输入报文,如果不是则为输出报文
+  -f HEADER_FMT_LIST, --header_fmt_list=HEADER_FMT_LIST
+                        头部数据解析列表,
+                        名字,解析方式,开始位置,长度
+                        .必须要有cmdid
+                        如 cmdid,H,4,2|userid,L,14,4|seqid,L,4,4|result,l,10,4
+  -b, --big_endian      是不是大端协议
+
+#+END_SRC   
+
+
+例子:
+
+#+BEGIN_SRC   text
+$ ./onlinei 00 00 00 1B 04 05 00 00 C3 80 00 00 00 6D 00 00 00 00 00 00 00 02 00 08 BE 02 7D 
+报文总长:	[27]
+cmdid:		[1029]
+userid:		[50048]
+seqid:		[109]
+result:		[0]
+
+
+XML生成时间:	2013年06月03日 星期1 16:32:21
+协议名称:	cli_sync_position
+私有结构:	cli_sync_position_in
+    /* 时间戳 */
+    [timestamp]=2
+    /* 0:人,1:宠物 */
+    [type]=0
+    /* 人的位置 */
+    [postion]=>{
+    	/*  */
+    	[map_x]=2238
+    	/*  */
+    	[map_y]=637
+    }
+---------------------------------------
+
+解析成功
+---------------------------------------
+
+
+#+END_SRC  
+
+
+
+*  xml 文件数据加载 到 C++  中
+
+将xml 文件加载到 Cmessage 对象(协议平台中定义的结构体)中, 而无需写额外的代码
+
+** 例子
+xml 结构:
+#+BEGIN_SRC   xml
+<root>
+	<title id="600000" add_phy_def_rate="0.1" module_type="1" main_type="1" 
+add_solar_atk_rate="0" order="1" condition="等级排行第1" 
+add_solar_def_rate="0" ranking="1" 
+add_phy_atk_rate="0.1" title_name="奥特第一人" >
+			</title>
+	<title id="600001" add_phy_def_rate="0" module_type="2" main_type="1"
+ add_solar_atk_rate="0.1" order="2" condition="拥有金币数量排行第1名和第2名" 
+add_solar_def_rate="0.1" ranking="2" add_phy_atk_rate="0.1" title_name="富甲天下" >
+			</title>
+</root>
+#+END_SRC  
+
+对应的 结构体 
+
+[[./images/proto_6.png]]
+
+[[./images/proto_7.png]]
+
+** 将xml导入成 map
+
+将变长数组 的说明 设置成 
+#+BEGIN_SRC   text
+生成map代码配置{{  "load_xml_use_map" : true }}使用std::map保存数据,key 为第一个字段
+
+#+END_SRC  
+
+在上面的例子中
+
+C++ 代码中会多生成出 _title_map 的std::map 对象 , key 是 id 
+
+这样就可能直接使用id 查找数据了
+
+并会生成 成员函数 get_title_item_by_id(uint32_t dd )
+
+
+** int 数组导入
+
+策划经常会 编辑出这样的字段，idlist="1008,1009,1011 ";
+
+这时你可以将之导入成   uint32 的 变长数组.  
+
+
+* 编辑器支持
+** 支持.tpro 文件语法高亮
+当做cpp文件处理
+*** vim
+#+BEGIN_SRC  cpp 
+autocmd BufEnter *.tpro  set filetype=cpp
+
+#+END_SRC  
+
+*** emacs 
+#+BEGIN_SRC   elisp
+(add-to-list 'auto-mode-alist (cons "\\.tpro\\'" 'c++-mode))
+#+END_SRC  
+** 支持 F7 查找 命令相关的 xxx_cmd,xxx_in,xxx_out
+*** vim
+
+#+BEGIN_SRC   python
+function! s:UserDefPython()
+python << PYTHONEOF
+import re
+import sys
+import vim
+def get_proto_key(word,stroe_name):
+    if (word.isupper()):
+        word=word.lower();
+
+    if  re.search ("_in$", word ): value= word[:-3]
+    elif  re.search ("_out$", word ): value=word[:-4]
+    elif  re.search ("_cmd$", word ): value=word[:-4]
+    else: value=word
+    if value!= word:
+        key="\<%s_cmd\>\|\<%s\>\|\<%s_in\>\|\<%s_out\>"%(value, value,value,value )
+    else: key=word
+    vim.command("silent let %s='%s'" % (stroe_name,key))
+PYTHONEOF
+endfunction
+
+if has('python')
+    call s:UserDefPython()
+endif
+
+"用于支持 协议查找 ：cmd<->function<->in<->out
+function! Proto_find()
+
+    "得到光标下的单词
+    let curword=expand("<cword>")
+    python get_proto_key(vim.eval("curword"),"find_word" )
+    "设置搜索寄存器
+    let  @/ = find_word
+    call histadd("/", find_word )
+    "查找下一个..
+    exec "normal! n"
+endfunction
+
+map <F7> <Esc>:call Proto_find() <CR>
+
+#+END_SRC  
+
+*** emacs
+#+BEGIN_SRC   elisp
+
+(defun search-proto-info ()
+  "Search for symbol near point.
+If FORWARD is nil, search backward, otherwise forward."
+  (interactive)
+  (let (string obj-str tmp-str )
+    (setq isearch-forward t)
+    (setq string (evil-find-symbol  t) )
+    
+    (if  (null string) 
+        (error "No proto item under point"))
+
+    (setq tmp-str "")
+    (cond
+     ((string= (substring string -4 ) "_out" )
+      (setq tmp-str (substring string 0 -4)))
+     ((string= (substring string -3 ) "_in" )
+      (setq tmp-str (substring string 0 -3)))
+     ((string= (substring string -4 ) "_cmd" )
+      (setq tmp-str (substring string 0 -4)))
+     )
+    (if (not (string= tmp-str ""))
+	(setq obj-str  (format "\\_<%s_cmd\\_>\\|\\_<%s_in\\_>\\|\\_<%s_out\\_>" tmp-str tmp-str tmp-str   ))
+      (setq obj-str string))
+    
+
+    (evil-search obj-str t t)))
+
+;;绑定
+(global-set-key (kbd "<f7>") 'search-proto-info )
+
+#+END_SRC  
+
+

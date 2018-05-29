@@ -1,0 +1,284 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en">
+<head>
+<title>online</title>
+<!-- 2013-06-20 四 10:16 -->
+<meta http-equiv="Content-Type" content="text/html;charset=utf-8"/>
+<meta name="generator" content="Org-mode"/>
+<meta name="author" content="jim"/>
+<style type="text/css">
+ <!--/*--><![CDATA[/*><!--*/
+  .title  { text-align: center; }
+  .todo   { font-family: monospace; color: red; }
+  .done   { color: green; }
+  .tag    { background-color: #eee; font-family: monospace;
+            padding: 2px; font-size: 80%; font-weight: normal; }
+  .timestamp { color: #bebebe; }
+  .timestamp-kwd { color: #5f9ea0; }
+  .right  { margin-left: auto; margin-right: 0px;  text-align: right; }
+  .left   { margin-left: 0px;  margin-right: auto; text-align: left; }
+  .center { margin-left: auto; margin-right: auto; text-align: center; }
+  .underline { text-decoration: underline; }
+  #postamble p, #preamble p { font-size: 90%; margin: .2em; }
+  p.verse { margin-left: 3%; }
+  pre {
+    border: 1px solid #ccc;
+    box-shadow: 3px 3px 3px #eee;
+    padding: 8pt;
+    font-family: monospace;
+    overflow: auto;
+    margin: 1.2em;
+  }
+  pre.src {
+    position: relative;
+    overflow: visible;
+    padding-top: 1.2em;
+  }
+  pre.src:before {
+    display: none;
+    position: absolute;
+    background-color: white;
+    top: -10px;
+    right: 10px;
+    padding: 3px;
+    border: 1px solid black;
+  }
+  pre.src:hover:before { display: inline;}
+  pre.src-sh:before    { content: 'sh'; }
+  pre.src-bash:before  { content: 'sh'; }
+  pre.src-emacs-lisp:before { content: 'Emacs Lisp'; }
+  pre.src-R:before     { content: 'R'; }
+  pre.src-perl:before  { content: 'Perl'; }
+  pre.src-java:before  { content: 'Java'; }
+  pre.src-sql:before   { content: 'SQL'; }
+
+  table { border-collapse:collapse; }
+  td, th { vertical-align:top;  }
+  th.right  { text-align: center;  }
+  th.left   { text-align: center;   }
+  th.center { text-align: center; }
+  td.right  { text-align: right;  }
+  td.left   { text-align: left;   }
+  td.center { text-align: center; }
+  dt { font-weight: bold; }
+  .footpara:nth-child(2) { display: inline; }
+  .footpara { display: block; }
+  .footdef  { margin-bottom: 1em; }
+  .figure { padding: 1em; }
+  .figure p { text-align: center; }
+  .inlinetask {
+    padding: 10px;
+    border: 2px solid gray;
+    margin: 10px;
+    background: #ffffcc;
+  }
+  #org-div-home-and-up
+   { text-align: right; font-size: 70%; white-space: nowrap; }
+  textarea { overflow-x: auto; }
+  .linenr { font-size: smaller }
+  .code-highlighted { background-color: #ffff00; }
+  .org-info-js_info-navigation { border-style: none; }
+  #org-info-js_console-label
+    { font-size: 10px; font-weight: bold; white-space: nowrap; }
+  .org-info-js_search-highlight
+    { background-color: #ffff00; color: #000000; font-weight: bold; }
+  /*]]>*/-->
+</style>
+<script type="text/javascript">
+/*
+@licstart  The following is the entire license notice for the
+JavaScript code in this tag.
+
+Copyright (C) 2012  Free Software Foundation, Inc.
+
+The JavaScript code in this tag is free software: you can
+redistribute it and/or modify it under the terms of the GNU
+General Public License (GNU GPL) as published by the Free Software
+Foundation, either version 3 of the License, or (at your option)
+any later version.  The code is distributed WITHOUT ANY WARRANTY;
+without even the implied warranty of MERCHANTABILITY or FITNESS
+FOR A PARTICULAR PURPOSE.  See the GNU GPL for more details.
+
+As additional permission under GNU GPL version 3 section 7, you
+may distribute non-source (e.g., minimized or compacted) forms of
+that code without the copy of the GNU GPL normally required by
+section 4, provided you include this license notice and a URL
+through which recipients can access the Corresponding Source.
+
+
+@licend  The above is the entire license notice
+for the JavaScript code in this tag.
+*/
+<!--/*--><![CDATA[/*><!--*/
+ function CodeHighlightOn(elem, id)
+ {
+   var target = document.getElementById(id);
+   if(null != target) {
+     elem.cacheClassElem = elem.className;
+     elem.cacheClassTarget = target.className;
+     target.className = "code-highlighted";
+     elem.className   = "code-highlighted";
+   }
+ }
+ function CodeHighlightOff(elem, id)
+ {
+   var target = document.getElementById(id);
+   if(elem.cacheClassElem)
+     elem.className = elem.cacheClassElem;
+   if(elem.cacheClassTarget)
+     target.className = elem.cacheClassTarget;
+ }
+/*]]>*///-->
+</script>
+</head>
+<body>
+<div id="content">
+<h1 class="title">online</h1>
+<div id="table-of-contents">
+<h2>Table of Contents</h2>
+<div id="text-table-of-contents">
+<ul>
+<li><a href="#sec-1">1. 概要</a></li>
+<li><a href="#sec-2">2. 用户数据保存在online 上</a></li>
+<li><a href="#sec-3">3. 用户请求序列化</a></li>
+<li><a href="#sec-4">4. 使用 协议平台</a></li>
+<li><a href="#sec-5">5. 定时器</a></li>
+</ul>
+</div>
+</div>
+<div id="outline-container-sec-1" class="outline-2">
+<h2 id="sec-1"><span class="section-number-2">1</span> 概要</h2>
+<div class="outline-text-2" id="text-1">
+<p>
+online 程序 使用单进程epoll异步回调驱动程序运行,  以求达成高并发目标。
+</p>
+
+<p>
+代码写法的演化也经历了很多年. 这里一个目前实践中新型 online 代码架构
+</p>
+
+<p>
+它的特点如下:
+</p>
+
+<p>
+*.用户数据尽可能保存在online上: 以避免每次从db中读取,使得协议代码因回调搞得凌乱不堪
+</p>
+
+<p>
+*.用户请求序列化: 可以一个一个处理请求，防止不同请求同时处理时意想不到的事情发生
+</p>
+
+<p>
+*.使用 协议平台 编辑协议的相关内容
+</p>
+
+<p>
+*.重载SO ,数据SO中支持虚函数对象
+</p>
+
+
+<p>
+*.使用 std::map 创建的 定时器 : 高效，易懂. 支持重载SO
+</p>
+
+<p>
+*.使用 Cmessage 序列化 协议报文 :  少写代码 ,不易出错，代码可读性强.
+</p>
+
+<p>
+*.使用 Cmessage 做 用户 session 的 数据保存: 少写代码 , 不易出错，代码可读性强.
+</p>
+
+<p>
+*.使用 Cmessage 读取 xml 配置 文件 : 少写代码 , 不易出错，代码可读性强.
+</p>
+
+<p>
+*.模拟客户端
+</p>
+</div>
+</div>
+<div id="outline-container-sec-2" class="outline-2">
+<h2 id="sec-2"><span class="section-number-2">2</span> 用户数据保存在online 上</h2>
+<div class="outline-text-2" id="text-2">
+<p>
+在登录online ,将用户的相关数据 从dbser 中 都读取到online 上.
+</p>
+
+<p>
+在online直接处理逻辑，然后将修改同步到 dbser ,  
+</p>
+
+<p>
+如果 dbser 返回出错， 就说明online 处理有问题. 直接将用户下线.
+</p>
+</div>
+</div>
+
+<div id="outline-container-sec-3" class="outline-2">
+<h2 id="sec-3"><span class="section-number-2">3</span> 用户请求序列化</h2>
+<div class="outline-text-2" id="text-3">
+<div class="org-src-container">
+
+<pre class="src src-c++"></pre>
+</div>
+
+<p>
+class Csprite:public Cwarrior{
+ private:
+        uint32<sub>t</sub>   waitcmd; &#x2013;
+        int32<sub>t</sub>   waitseq;
+</p>
+
+<p>
+public:
+</p>
+</div>
+</div>
+
+
+
+
+<div id="outline-container-sec-4" class="outline-2">
+<h2 id="sec-4"><span class="section-number-2">4</span> 使用 协议平台</h2>
+<div class="outline-text-2" id="text-4">
+<p>
+使用协议平台编辑所有的协议
+</p>
+
+<p>
+使用它将使得整个程序的代码的手工编写量减少30%以上
+</p>
+</div>
+</div>
+<div id="outline-container-sec-5" class="outline-2">
+<h2 id="sec-5"><span class="section-number-2">5</span> 定时器</h2>
+<div class="outline-text-2" id="text-5">
+<p>
+使用 std::map 替换原来 嵌入式链表 实现。   
+</p>
+
+<p>
+使用函数指针 回调相关函数 
+</p>
+
+<p>
+使用 Cmessage 做函数参数
+</p>
+
+<p>
+这两个结构都会在重载SO后失效,  需要重置
+</p>
+</div>
+</div>
+</div>
+<div id="postamble" class="status">
+<p class="author">Author: jim</p>
+<p class="date">Created: 2013-06-20 四 10:16</p>
+<p class="creator"><a href="http://www.gnu.org/software/emacs/">Emacs</a> 24.2.1 (<a href="http://orgmode.org">Org</a> mode 8.0.3)</p>
+<p class="xhtml-validation"><a href="http://validator.w3.org/check?uri=referer">Validate XHTML 1.0</a></p>
+</div>
+</body>
+</html>
